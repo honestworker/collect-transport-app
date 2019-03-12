@@ -14,6 +14,11 @@ if ($connect) {
     if ($user_id) {
         $job_detail = cta_job_detail($connect, $_POST['id']);
         if ($job_detail) {
+            if ($job_detail['status'] != 'Allocated') {
+                http_response_code(200);
+                echo json_encode(['status' => 'success', 'error_type' => 'completed', 'message' => 'This job is already completed.']);
+                exit;
+            }
             http_response_code(200);
             echo json_encode(['status' => 'success', 'data' => $job_detail, 'message' => '']);
             exit;
